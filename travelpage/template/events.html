@@ -1,0 +1,84 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block body %}
+
+        
+        <div class="row" style="margin-top: 0px">
+          <div class="col-md-3" >
+            <h5 style="margin-top: 20px;"> Filter by Category </h5> <hr>
+            <a href="/events"> ALL</a> <br>
+            <a href="/catfilter/3"> Family Tour</a> <br>
+            <a href="/catfilter/1"> Day Trek </a> <br>
+            <a href="/catfilter/2"> Camping</a> <br>
+            <a href="/catfilter/4"> Backapcking</a> <br>
+            
+
+            <h5 style="margin-top: 20px;"> Filter by Location </h5> <hr>
+            <a href="/index"> ALL</a> <br>
+            <a href="/locfilter/1"> Maharashtra</a> <br>
+            <a href="/locfilter/4"> Karnataka </a> <br>
+            <a href="/locfilter/5"> Himachal Pradesh </a> <br>
+            <a href="/locfilter/3"> Uttarakhand</a> <br>
+            <a href="/locfilter/2"> Sikkim</a> <br>
+
+            <h5 style="margin-top: 20px;"> Order by  </h5> <hr>
+            <a href="/sortby/1"> Event date Closer to Today</a> <br>
+            <a href="/sortby/0"> Event date Farther from Today </a> <br>
+          </div>
+
+          <!-- product section starts -->
+          <div class="col-md-9 mt-3">
+            <div class="row mt-1">
+              {% for i in eventsList %}
+                {% if forloop.counter0|divisibleby:3 %}
+                  </div><div class="row mt-4">  
+                {% endif %}
+            <div class="col-md-4">
+          <div class="card" style="width: 19rem;">
+            <img src="/media/{{i.e_image}}" class="card-img-top" alt="..." style="height: 350px;">
+            <div class="card-body">
+              <h3 class="card-title" style="color: orange; text-align: center; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" ><b>{{i.e_name}}</b></h3>
+              <hr>
+              {% if i.e_category == 1  %}
+                <p style="margin-bottom: 3px;"><b>Category: </b> Day Trek </p>  
+              {% elif i.e_category == 2 %}
+                <p style="margin-bottom: 3px;"><b>Category: </b> Camping </p>
+              {% elif i.e_category == 3 %}
+                <p style="margin-bottom: 3px;"><b>Category: </b> Family tour </p>
+              {% elif i.e_category == 4 %}
+                <p style="margin-bottom: 3px;"><b>Category: </b> Backapacking </p>
+              {% endif %}
+              
+              <p style="margin-bottom: 3px;"><b>When: </b>{{i.e_date}}</p>
+              {% if i.e_state == 1 %}
+                <p style="margin-bottom: 5px;"><b>Location: </b> Maharashtra</p>
+              {% elif i.e_state == 2 %}
+                <p style="margin-bottom: 5px;"><b>Location: </b> Sikkim</p>
+              {% elif i.e_state == 3 %}
+                <p style="margin-bottom: 5px;"><b>Location: </b> Uttarakhand</p>
+              {% elif i.e_state == 4 %}
+                <p style="margin-bottom: 5px;"><b>Location: </b> Karnataka</p>
+              {% elif i.e_state == 5 %}
+                <p style="margin-bottom: 5px;"><b>Location: </b> Himachal Pradesh</p>
+              {% endif %}
+              
+              <a href="/edetails/{{i.id}}" style="font-family: poppins; font-size: 14px; margin-left: 85px;">MORE DETAILS</a>
+            </div>
+          </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<!-- product section ends -->
+
+
+
+          </div>
+        </div>
+
+        <!-- Footer Sectin Starts -->
+        
+        {% endblock body %}
+
+        

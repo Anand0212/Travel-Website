@@ -1,0 +1,47 @@
+{% extends "basic.html" %}
+{% load static %}
+{% block title %} Contact {% endblock title %}
+
+{% block style %}{% endblock style %}
+
+{% block body %}
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-md-4">
+            <img src="{% static 'images/logo1.jpg' %}" alt="">
+            <h4 style="text-align: center; margin-top: 10px; color: orange;"> Bairagiyon Ki Daastan !</h4>
+        </div>
+    
+        <div class="col-md-8">
+            <h3 style="text-align: center;">We'll reach out to you shortly</h3>
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if errmsg %}
+                <div class="alert alert-danger">
+                    {{errmsg}}
+                </div>
+                    
+                {% elif success %}
+                    <div class="alert alert-success">
+                        {{success}}
+                    </div>
+                {% endif %} 
+
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Name </label>
+                  <input type="text" class="form-control" name="name">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Contact Number </label>
+                    <input type="text" class="form-control" name="number">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email Address </label>
+                    <input type="email" class="form-control" name="email">
+                </div>
+                <div id="emailHelp" class="form-text">We'll never share your email and Phone number with anyone else.</div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </div>
+{% endblock body %}

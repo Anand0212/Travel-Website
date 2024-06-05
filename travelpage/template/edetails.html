@@ -1,0 +1,74 @@
+{% extends "basic.html" %}
+{% load static  %}
+
+{% block title %} Event Details {% endblock title %}
+
+{% block style %}
+.button {
+    display: inline-block;
+    padding: 5px 5px 5px 5px;
+    background-color: orange;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    width: 150px;
+    margin-left: 180px;
+    margin-bottom: 20px;
+    color: black
+    
+}
+
+{% endblock style %}
+
+{% block body %} 
+
+{% for i in details  %}
+{% csrf_token %}
+                {% if msg %}
+                    <div class="alert alert-success">
+                        {{msg}}
+                    </div>
+                {% endif %}
+<div class="row" style="margin-top: 10px;">
+    <h1 style="text-align: center;color: orange; "> {{i.e_name}} </h1> <hr>
+</div>
+<div class="row" style="margin-top: 40px;">
+    <div class="col-md-4">
+        <img src="/media/{{i.e_image}}" style="height: 560px; margin-left: 20px;">
+    </div>
+    <div class="col-md-6" style="margin-left: 90px;">
+       <div class="row" style="border: 2px solid grey;font-size: 20px;">
+            {% if i.e_category == 1  %}
+                <p style="margin-bottom: 3px;"><b>Category: </b> Day Trek </p>  
+            {% elif i.e_category == 2 %}
+                <p style="margin-bottom: 3px;"><b>Category: </b> Camping </p>
+            {% elif i.e_category == 3 %}
+                <p style="margin-bottom: 3px;"><b>Category: </b> Family tour </p>
+            {% elif i.e_category == 4 %}
+                <p style="margin-bottom: 3px;"><b>Category: </b> Backapacking </p>
+            {% endif %}
+            <hr>
+            <p style="margin-bottom: 3px;"><b> Event Description: </b> {{i.e_desc}} </p>
+            <hr>
+            <p style="margin-bottom: 3px;"><b> Event Date : </b> {{i.e_date}} </p>
+            <hr>
+            <p style="margin-bottom: 3px;"><b> Cost: </b> {{i.e_price}} </p>
+            <hr>
+            <p style="margin-bottom: 9px;"><b> Itinerary: </b> {{i.e_itinerary}} </p>
+            
+            <a href="/eenroll/{{i.id}}" class="button">Enroll Now > </a>
+            <a href="/confirm" class="button">Confirm Enrollment > </a>
+
+        </div>
+    </div>
+    
+    
+    
+      
+    {% endfor %}
+</div>
+
+
+
+
+{% endblock body %}

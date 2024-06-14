@@ -34,6 +34,7 @@ class Confirm(models.Model):
     eid = models.ForeignKey('EventFull', on_delete=models.CASCADE, db_column='e_id')
     # n_participants = models.IntegerField(default=1)
     participants = models.IntegerField(default=1)
+    amt=models.FloatField(default=100)
 
 class Enqiury(models.Model):
     name = models.CharField(max_length=40)

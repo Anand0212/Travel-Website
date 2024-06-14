@@ -5,6 +5,8 @@ from math import ceil
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db.models import Q
+import razorpay
+
 
 # Create your views here.
 def index(request):
@@ -31,14 +33,11 @@ def ilogin(request):
             u = authenticate(username = user, password = password)
             if u is not None:
                 login(request, u)
-                return redirect('/index')
+                return redirect('/')
             else:
                 context['errmsg'] = 'Username & Password Not valid'
                 return render(request, 'login.html', context)
     return render(request, 'login.html')
-
-
-
 
 def register(request):
     context = {}
@@ -67,7 +66,7 @@ def register(request):
 
 def about(request):
     return render(request, 'about.html')
-    # return render(request, 'about.html')
+    
 
 def contact(request):
     context = {}
@@ -84,26 +83,7 @@ def contact(request):
             context['success'] = "Thanks! We'll reach out to you shortly"
         return render(request ,'contact.html', context)
     return render(request, 'contact.html')
-    # return render(request, 'contact.html')
-
-# def eventView(request):
-#     return render(request, 'eventView.html')
-
-# def checkout(request):
-#     return render(request, 'checkout.html')
-
-# def journeys(request):
-#     return HttpResponse('Journeys')
-#     #return render(request, 'about.html')
-
-# only for try purpose:
-def indextry(request):
-    return render(request, 'index_try.html')
-
-def indextry1(request):
-    return render(request, 'index2.html')
-
-# try purpose ends
+    
 
 def catfilter(request, n):
     events = EventFull.objects.filter(e_category = n)
@@ -128,50 +108,11 @@ def edetails(request, eid):
     events = EventFull.objects.filter(id = eid)
     context = {'details': events}
     return render(request, 'edetails.html', context)
-    
-
-
-# def enroll(request, eid):
-#     context = {}
-#     e = EventFull.objects.filter(id = eid)
-#     context['ev'] = e
-#     if request.user.is_authenticated:
-#         if request.method == 'POST':
-#             cust = request.POST.get('c_name')
-#             phone = request.POST.get('mobile')
-#             p_number = request.POST.get('no_of_participants')
-#             if cust == '' or phone == '' or p_number == '':
-#                 context['errmsg'] = 'Fields Cannot be empty'
-#                 return render(request, 'enrollnow.html', context)
-#             else: 
-#                 u = Enroll(c_name = cust, c_mobile = phone, no_participants = p_number)
-#                 u.save()
-#                 # context['success'] = 'Customer details saved'
-#                 return render(request, 'enrollnow.html', context)
-#         return render(request, 'enrollnow.html')
-#     else:
-#         return redirect('/ilogin')
-
-# def enroll(request, eid):
-#     context = {}
-#     if request.user.is_authenticated:
-#         u = User.objects.filter(id = request.user.id)
-#         e = EventFull.objects.filter(id = eid)
-#         q1 = Q(eid = e[0])
-#         q2 = Q(userid = u[0])
-#         c = Confirm.objects.filter(q1 & q2)
-#         cevent = Confirm.objects.create(eid = e[0], userid = u[0])
-#         cevent.save()
-#         context['msg'] = 'Enrolled, review & head fro payment'
-#         context['data'] = e
-#         return render(request, 'edetails.html', context)
-#     else:
-#         redirect('/login')
 
 
 def ulogout(request):
     logout(request)
-    return redirect('/index')
+    return redirect('/')
 
 def confirm(request):
     context = {}
@@ -204,8 +145,7 @@ def eenroll(request, eid):
             return render(request, 'edetails.html', context)
     else:
         return redirect('/ilogin')
-        #redirect('/login')
-    # return HttpResponse('Hi')
+   
 
 def updateqty(request, x, cid):
     c = Confirm.objects.filter(id = cid)
@@ -221,3 +161,24 @@ def remove(request, cid):
     c = Confirm.objects.filter(id = cid)
     c.delete()
     return redirect('/confirm')
+
+
+def makepayments(request):
+    client = razorpay.Client(auth=("rzp_test_o2A6cxwwKHRTY6", "H4LXfYkLDap3b82NF19WCD2O"))
+    orders=Confirm.objects.filter(userid=request.user.id)
+    context={}
+    context["orders"]=orders
+    sum=0
+
+    for x in orders:
+        sum=sum+x.eid.e_price * x.participants
+        orderid=x.eid
+
+    data = { "amount": sum*100, "currency": "INR", "receipt": "orderid" }
+    payment = client.order.create(data=data)
+    context["payment"]=payment
+    return render(request,"pay.html",context)
+
+
+def paymentsuccess(request):
+    return HttpResponse(" PAYMENT SUCCESS ")

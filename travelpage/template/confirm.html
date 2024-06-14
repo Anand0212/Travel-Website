@@ -5,6 +5,7 @@
 {% block style %}{% endblock style %}
 
 {% block body %}
+<h3 style=" color: blue; margin-left: 20px;"> Confirm Enrollment</h3>
     {% for i in carts  %}
         <div class="row">
             <div class="col-md-6">
@@ -14,7 +15,7 @@
 
             </div>
             <div class="col-md-6" style="margin-top: 200px;">
-                <h3 style=" color: blue; margin-left: 20px;"> Confirm Enrollment</h3>
+                
                 <h4 style="margin-top: 20px;"> <b> Event Name: </b> {{i.eid.e_name}} </h4>
                 <h4 style="margin-top: 20px;"> <b> Event Date: </b> {{i.eid.e_date}} </h4>
                 <h4 style="margin-top: 20px;"> <b> Event Price: </b> {{i.eid.e_price}} </h4>
@@ -32,39 +33,11 @@
     {% endfor %}
     <h4 style="margin-top: 20px;"> <b> Total Amount : </b> {{total}} 
         
-        <a href="#"><button class="btn btn-warning">Make Payment</button></a>
+        <a href="/makepayment/"><button class="btn btn-warning">Make Payment</button></a>
     </h4>
 
     
-        <script> 
-        
-var options = {
-    "key": "rzp_test_o2A6cxwwKHRTY6", // Enter the Key ID generated from the Dashboard
-    "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "Sahyadri Ventures", //your business name
-    "description": "Test Transaction",
-    "order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
-    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-        "name": "Gaurav Kumar", //your customer's name
-        "email": "gaurav.kumar@example.com",
-        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
-    },
-    "notes": {
-        "address": "Razorpay Corporate Office"
-    },
-    "theme": {
-        "color": "#3399cc"
-    }
-};
-var rzp1 = new Razorpay(options);
-document.getElementById('rzp-button1').onclick = function(e){
-    rzp1.open();
-    e.preventDefault();
-}
 
-        </script>
-    
+    <script src="https://checkout.razorpay.com/v1/checkout.js">
 
 {% endblock body %}
